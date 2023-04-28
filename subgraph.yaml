@@ -1,0 +1,114 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Account
+    network: filecoin-calibration
+    source:
+      address: "0xc39c682bb400A288AA128eFC13cAD0d6c4cBb49A"
+      abi: Account
+      startBlock: 511200
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - CancelAccount
+        - CancelLikeMoment
+        - CreateAccount
+        - CreateComment
+        - CreateMoment
+        - CreateSubSpaceDomain
+        - Initialized
+        - LikeMoment
+        - OwnershipTransferred
+        - RemoveComment
+        - RemoveMoment
+        - RentSpace
+        - ReturnSpace
+        - SetBeneficiary
+        - SetMintFee
+        - SetSubSpaceDomainLimit
+        - UpdateAvatarURI
+        - UpdateExpireSeconds
+        - UpdateRentedSpaceDomainName
+      abis:
+        - name: Account
+          file: ./abis/Account.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: CancelAccount(indexed uint64)
+          handler: handleCancelAccount
+        - event: CancelLikeMoment(indexed uint64,indexed uint120)
+          handler: handleCancelLikeMoment
+        - event: CreateAccount(indexed uint64,indexed uint64,indexed string,string,address)
+          handler: handleCreateAccount
+        - event: CreateComment(indexed uint64,indexed uint120,indexed uint128,string)
+          handler: handleCreateComment
+        - event: CreateMoment(indexed uint64,indexed uint120,string)
+          handler: handleCreateMoment
+        - event: CreateSubSpaceDomain(indexed uint64,indexed uint64,indexed uint64,uint64,string)
+          handler: handleCreateSubSpaceDomain
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: LikeMoment(indexed uint64,indexed uint120)
+          handler: handleLikeMoment
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RemoveComment(indexed uint64,indexed uint128)
+          handler: handleRemoveComment
+        - event: RemoveMoment(indexed uint64,indexed uint120)
+          handler: handleRemoveMoment
+        - event: RentSpace(indexed uint64,indexed uint120)
+          handler: handleRentSpace
+        - event: ReturnSpace(indexed uint64,indexed uint120)
+          handler: handleReturnSpace
+        - event: SetBeneficiary(address)
+          handler: handleSetBeneficiary
+        - event: SetMintFee(uint256)
+          handler: handleSetMintFee
+        - event: SetSubSpaceDomainLimit(uint64)
+          handler: handleSetSubSpaceDomainLimit
+        - event: UpdateAvatarURI(indexed uint64,string)
+          handler: handleUpdateAvatarURI
+        - event: UpdateExpireSeconds(indexed uint64,uint64)
+          handler: handleUpdateExpireSeconds
+        - event: UpdateRentedSpaceDomainName(indexed uint64,string)
+          handler: handleUpdateRentedSpaceDomainName
+      file: ./src/account.ts
+
+  - kind: ethereum
+    name: SpaceMarket
+    network: filecoin-calibration
+    source:
+      address: "0x9c596F400cD785788776eDa32FDC6d0Ba351C230"
+      abi: SpaceMarket
+      startBlock: 511200
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - List
+        - Rent
+        - Revoke
+        - Update
+        - WithdrawRent
+      abis:
+        - name: SpaceMarket
+          file: ./abis/SpaceMarket.json
+      eventHandlers:
+        - event: List(indexed address,indexed address,indexed uint64,uint256)
+          handler: handleList
+        - event: Rent(indexed address,indexed address,indexed uint64,uint256)
+          handler: handleRent
+        - event: Revoke(indexed address,indexed address,indexed uint64)
+          handler: handleRevoke
+        - event: Update(indexed address,indexed address,indexed uint64,uint64,uint256)
+          handler: handleUpdate
+        - event: WithdrawRent(address,uint256)
+          handler: handleWithdrawRent
+      file: ./src/spacemarket.ts

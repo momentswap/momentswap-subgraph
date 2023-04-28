@@ -1,0 +1,287 @@
+type Approval @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  operator: Bytes! # address
+  spaceId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CancelAccount @entity(immutable: true) {
+  id: Bytes!
+  accountId: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CancelLikeMoment @entity(immutable: true) {
+  id: Bytes!
+  accountId: BigInt! # uint64
+  momentId: BigInt! # uint120
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CreateAccount @entity(immutable: true) {
+  id: Bytes!
+  accountId: BigInt! # uint64
+  primarySpaceId: BigInt! # uint64
+  primaryDomainName: String! # string
+  avatarURI: String! # string
+  wallet: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CreateComment @entity(immutable: true) {
+  id: Bytes!
+  accountId: BigInt! # uint64
+  momentId: BigInt! # uint120
+  commentId: BigInt! # uint128
+  commentText: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CreateMoment @entity(immutable: true) {
+  id: Bytes!
+  accountId: BigInt! # uint64
+  momentId: BigInt! # uint120
+  metadataURI: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CreateSubSpaceDomain @entity(immutable: true) {
+  id: Bytes!
+  primarySpaceId: BigInt! # uint64
+  subSpaceId: BigInt! # uint64
+  subDomainName: String! # string
+  expireSeconds: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Initialized @entity(immutable: true) {
+  id: Bytes!
+  version: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LikeMoment @entity(immutable: true) {
+  id: Bytes!
+  accountId: BigInt! # uint64
+  momentId: BigInt! # uint120
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RemoveComment @entity(immutable: true) {
+  id: Bytes!
+  accountId: BigInt! # uint64
+  commentId: BigInt! # uint128
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RemoveMoment @entity(immutable: true) {
+  id: Bytes!
+  accountId: BigInt! # uint64
+  momentId: BigInt! # uint120
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RentSpace @entity(immutable: true) {
+  id: Bytes!
+  userId: BigInt! # uint64
+  spaceId: BigInt! # uint120
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ReturnSpace @entity(immutable: true) {
+  id: Bytes!
+  userId: BigInt! # uint64
+  spaceId: BigInt! # uint120
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SetBeneficiary @entity(immutable: true) {
+  id: Bytes!
+  beneficiary: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SetMintFee @entity(immutable: true) {
+  id: Bytes!
+  mintFee: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SetSubSpaceDomainLimit @entity(immutable: true) {
+  id: Bytes!
+  limit: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdateAvatarURI @entity(immutable: true) {
+  id: Bytes!
+  accountId: BigInt! # uint64
+  avatarURI: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdateExpireSeconds @entity(immutable: true) {
+  id: Bytes!
+  spaceId: BigInt! # uint64
+  expireSeconds: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdateRentedSpaceDomainName @entity(immutable: true) {
+  id: Bytes!
+  spaceId: BigInt! # uint64
+  domainName: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type List @entity(immutable: true) {
+  id: Bytes!
+  seller: Bytes!
+  accountContract: Bytes!
+  spaceId: BigInt!
+  price: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Rent @entity(immutable: true) {
+  id: Bytes!
+  buyer: Bytes!
+  accountContract: Bytes!
+  spaceId: BigInt!
+  price: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Revoke @entity(immutable: true) {
+  id: Bytes!
+  seller: Bytes!
+  accountContract: Bytes!
+  spaceId: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Update @entity(immutable: true) {
+  id: Bytes!
+  seller: Bytes!
+  accountContract: Bytes!
+  spaceId: BigInt!
+  expireSeconds: BigInt!
+  newPrice: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type WithdrawRent @entity(immutable: true) {
+  id: Bytes!
+  to: Bytes!
+  amount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+
+type Account @entity {
+  id: ID!
+  address:  Bytes!
+  accountId:  BigInt!
+  avatarURI:  String!
+  moments: [Moment!]! @derivedFrom(field: "account")
+  comments: [Comment!]! @derivedFrom(field: "account")
+  likedMoments: [Moment!]! @derivedFrom(field: "likedAccounts")
+  SpaceDomains:  [SpaceDomain!]! @derivedFrom(field: "account")
+  rentedSpaces: [SpaceDomain!]! @derivedFrom(field: "rentAccount")
+}
+
+type SpaceDomain @entity {
+  id: ID!
+  spaceId: BigInt!
+  domainName: String!
+  primarySpaceId: BigInt!
+  expireSeconds: BigInt!
+  account: Account!
+  rentAccount: Account
+}
+
+type Moment @entity {
+  id: ID!
+  momentId: BigInt!
+  account: Account!
+  likedAccounts: [Account!]
+  timestamp: BigInt!
+  metadataURI: String!
+  comments: [Comment!]! @derivedFrom(field: "moment")
+}
+
+
+type Comment @entity {
+  id: ID!
+  commentId: BigInt!
+  account: Account!
+  moment: Moment!
+  timestamp: BigInt!
+  text: String!
+}
+
+type Item @entity {
+  id: ID!
+  spaceId: BigInt!
+  seller: Bytes! 
+  accountContract: Bytes! 
+  price: BigInt!
+}

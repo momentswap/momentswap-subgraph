@@ -1,0 +1,1100 @@
+[
+	{
+		"inputs": [],
+		"name": "AccountAlreadyExists",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "AccountNotFound",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "MaximumNumberOfSpaceDomainsReached",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "MintFeeNotPaid",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "NotUser",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "SpaceDomainHasNotExpired",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "Unapproved",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "spaceId",
+				"type": "uint256"
+			}
+		],
+		"name": "Approval",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			}
+		],
+		"name": "CancelAccount",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint120",
+				"name": "momentId",
+				"type": "uint120"
+			}
+		],
+		"name": "CancelLikeMoment",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "primarySpaceId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "string",
+				"name": "primaryDomainName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "avatarURI",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "wallet",
+				"type": "address"
+			}
+		],
+		"name": "CreateAccount",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint120",
+				"name": "momentId",
+				"type": "uint120"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint128",
+				"name": "commentId",
+				"type": "uint128"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "commentText",
+				"type": "string"
+			}
+		],
+		"name": "CreateComment",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint120",
+				"name": "momentId",
+				"type": "uint120"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "metadataURI",
+				"type": "string"
+			}
+		],
+		"name": "CreateMoment",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "primarySpaceId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "subSpaceId",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "expireSeconds",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "subDomainName",
+				"type": "string"
+			}
+		],
+		"name": "CreateSubSpaceDomain",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint8",
+				"name": "version",
+				"type": "uint8"
+			}
+		],
+		"name": "Initialized",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint120",
+				"name": "momentId",
+				"type": "uint120"
+			}
+		],
+		"name": "LikeMoment",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint128",
+				"name": "commentId",
+				"type": "uint128"
+			}
+		],
+		"name": "RemoveComment",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint120",
+				"name": "momentId",
+				"type": "uint120"
+			}
+		],
+		"name": "RemoveMoment",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "userId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint120",
+				"name": "spaceId",
+				"type": "uint120"
+			}
+		],
+		"name": "RentSpace",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "userId",
+				"type": "uint64"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint120",
+				"name": "spaceId",
+				"type": "uint120"
+			}
+		],
+		"name": "ReturnSpace",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "beneficiary",
+				"type": "address"
+			}
+		],
+		"name": "SetBeneficiary",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "mintFee",
+				"type": "uint256"
+			}
+		],
+		"name": "SetMintFee",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "limit",
+				"type": "uint64"
+			}
+		],
+		"name": "SetSubSpaceDomainLimit",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "avatarURI",
+				"type": "string"
+			}
+		],
+		"name": "UpdateAvatarURI",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "expireSeconds",
+				"type": "uint64"
+			}
+		],
+		"name": "UpdateExpireSeconds",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "domainName",
+				"type": "string"
+			}
+		],
+		"name": "UpdateRentedSpaceDomainName",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "accountIds",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"name": "accounts",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			}
+		],
+		"name": "approve",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64[]",
+				"name": "accountIdArray",
+				"type": "uint64[]"
+			}
+		],
+		"name": "batchGetAccountData",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "uint120[]",
+						"name": "momentIds",
+						"type": "uint120[]"
+					},
+					{
+						"internalType": "uint64[]",
+						"name": "createdSpaceIds",
+						"type": "uint64[]"
+					},
+					{
+						"internalType": "uint64[]",
+						"name": "rentedSpaceIds",
+						"type": "uint64[]"
+					}
+				],
+				"internalType": "struct AccountData[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address[]",
+				"name": "addressArray",
+				"type": "address[]"
+			}
+		],
+		"name": "batchGetAccountId",
+		"outputs": [
+			{
+				"internalType": "uint64[]",
+				"name": "",
+				"type": "uint64[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64[]",
+				"name": "accountIdArray",
+				"type": "uint64[]"
+			}
+		],
+		"name": "batchGetAddress",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "beneficiary",
+		"outputs": [
+			{
+				"internalType": "address payable",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "cancelAccount",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint120",
+				"name": "momentId",
+				"type": "uint120"
+			}
+		],
+		"name": "cancelLikeMoment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			}
+		],
+		"name": "checkSpaceCreator",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "domainName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "avatarURI",
+				"type": "string"
+			}
+		],
+		"name": "createAccount",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint120",
+				"name": "momentId",
+				"type": "uint120"
+			},
+			{
+				"internalType": "string",
+				"name": "commentText",
+				"type": "string"
+			}
+		],
+		"name": "createComment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "metadataURI",
+				"type": "string"
+			}
+		],
+		"name": "createMoment",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "primarySpaceId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "domainName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint64",
+				"name": "expireSeconds",
+				"type": "uint64"
+			}
+		],
+		"name": "createSubSpaceDomain",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			}
+		],
+		"name": "getAccountData",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "uint120[]",
+						"name": "momentIds",
+						"type": "uint120[]"
+					},
+					{
+						"internalType": "uint64[]",
+						"name": "createdSpaceIds",
+						"type": "uint64[]"
+					},
+					{
+						"internalType": "uint64[]",
+						"name": "rentedSpaceIds",
+						"type": "uint64[]"
+					}
+				],
+				"internalType": "struct AccountData",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			}
+		],
+		"name": "getApproved",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			}
+		],
+		"name": "getCreatedSpaceIds",
+		"outputs": [
+			{
+				"internalType": "uint64[]",
+				"name": "",
+				"type": "uint64[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "accountId",
+				"type": "uint64"
+			}
+		],
+		"name": "getRentedSpaceIds",
+		"outputs": [
+			{
+				"internalType": "uint64[]",
+				"name": "",
+				"type": "uint64[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "contract IMoment",
+				"name": "_moment",
+				"type": "address"
+			},
+			{
+				"internalType": "contract ISpaceFNS",
+				"name": "_spaceFNS",
+				"type": "address"
+			}
+		],
+		"name": "initialize",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint120",
+				"name": "momentId",
+				"type": "uint120"
+			}
+		],
+		"name": "likeMoment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "mintFee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "moment",
+		"outputs": [
+			{
+				"internalType": "contract IMoment",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint128",
+				"name": "commentId",
+				"type": "uint128"
+			}
+		],
+		"name": "removeComment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint120",
+				"name": "momentId",
+				"type": "uint120"
+			}
+		],
+		"name": "removeMoment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "userId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			}
+		],
+		"name": "rentSpace",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "userId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			}
+		],
+		"name": "returnSpace",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_beneficiary",
+				"type": "address"
+			}
+		],
+		"name": "setBeneficiary",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_mintFee",
+				"type": "uint256"
+			}
+		],
+		"name": "setMintFee",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "limit",
+				"type": "uint64"
+			}
+		],
+		"name": "setSubSpaceDomainLimit",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "spaceFNS",
+		"outputs": [
+			{
+				"internalType": "contract ISpaceFNS",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "subSpaceDomainLimit",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalAccountCount",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "avatarURI",
+				"type": "string"
+			}
+		],
+		"name": "updateAvatarURI",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "uint64",
+				"name": "expireSeconds",
+				"type": "uint64"
+			}
+		],
+		"name": "updateExpireSeconds",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "spaceId",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "domainName",
+				"type": "string"
+			}
+		],
+		"name": "updateRentedSpaceDomainName",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]

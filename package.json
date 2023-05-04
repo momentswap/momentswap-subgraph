@@ -1,14 +1,17 @@
 {
-  "name": "spaceFns",
-  "license": "UNLICENSED",
+  "name": "momentswap-subgraph",
+  "license": "MIT",
   "scripts": {
-    "codegen": "graph codegen",
+    "generate": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node http://103.1.65.125:8020/ --ipfs http://103.1.65.125:8011/ spaceFns",
-    "create-local": "graph create --node http://localhost:8020/ spaceFns",
-    "remove-local": "graph remove --node http://localhost:8020/ spaceFns",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 spaceFns",
-    "test": "graph test"
+    "test": "graph test",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ momentswap",
+    "create-local": "graph create --node http://localhost:8020/ momentswap",
+    "remove-local": "graph remove --node http://localhost:8020/ momentswap",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 momentswap",
+    "create-calibration": "graph create --node http://103.1.65.125:8020/ momentswap",
+    "remove-calibration": "graph remove --node http://103.1.65.125:8020/ momentswap",
+    "deploy-calibration": "graph deploy --node http://103.1.65.125:8020/ --ipfs https://api.thegraph.com/ipfs/ momentswap"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.47.1",

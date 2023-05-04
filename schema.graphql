@@ -262,12 +262,11 @@ type Moment @entity {
   id: ID!
   momentId: BigInt!
   account: Account!
-  likedAccounts: [Account!]
+  likedAccounts: [Account!]!
   timestamp: BigInt!
   metadataURI: String!
   comments: [Comment!]! @derivedFrom(field: "moment")
 }
-
 
 type Comment @entity {
   id: ID!
@@ -281,7 +280,7 @@ type Comment @entity {
 type Item @entity {
   id: ID!
   spaceId: BigInt!
-  seller: Bytes! 
-  accountContract: Bytes! 
+  seller: Bytes!
+  accountContract: Bytes!
   price: BigInt!
 }

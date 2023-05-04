@@ -23,16 +23,17 @@ import {
 } from "../generated/Account/Account"
 import {
   Account,
-  SpaceDomain,
   Approval,
   CancelAccount,
   CancelLikeMoment,
+  Comment,
   CreateAccount,
   CreateComment,
   CreateMoment,
   CreateSubSpaceDomain,
   Initialized,
   LikeMoment,
+  Moment,
   OwnershipTransferred,
   RemoveComment,
   RemoveMoment,
@@ -41,11 +42,10 @@ import {
   SetBeneficiary,
   SetMintFee,
   SetSubSpaceDomainLimit,
+  SpaceDomain,
   UpdateAvatarURI,
   UpdateExpireSeconds,
   UpdateRentedSpaceDomainName,
-  Moment,
-  Comment
 } from "../generated/schema"
 
 export function handleApproval(event: ApprovalEvent): void {
@@ -126,8 +126,14 @@ export function handleCreateAccount(event: CreateAccountEvent): void {
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
 
-  entity.save() 
-  createAccountFunc(event.params.accountId, event.params.primarySpaceId, event.params.primaryDomainName.toHexString(), event.params.avatarURI, event.params.wallet)    
+  entity.save()
+  createAccountFunc(
+    event.params.accountId,
+    event.params.primarySpaceId,
+    event.params.primaryDomainName.toHexString(),
+    event.params.avatarURI,
+    event.params.wallet
+  )
 }
 
 function createAccountFunc(accountId: BigInt, primarySpaceId: BigInt, primaryDomainName: string, avatarURI: string, wallet: Address): void {
@@ -160,10 +166,22 @@ export function handleCreateComment(event: CreateCommentEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  createCommentFunc(event.params.accountId, event.params.momentId, event.params.commentId, event.params.commentText, event.block.timestamp)
+  createCommentFunc(
+    event.params.accountId,
+    event.params.momentId,
+    event.params.commentId,
+    event.params.commentText,
+    event.block.timestamp
+  )
 }
 
-function createCommentFunc(accountId: BigInt, momentId: BigInt, commentId: BigInt, commentText: string, timestamp: BigInt): void {
+function createCommentFunc(
+  accountId: BigInt,
+  momentId: BigInt,
+  commentId: BigInt,
+  commentText: string,
+  timestamp: BigInt
+): void {
   let comment = new Comment(commentId.toHexString())
   comment.commentId = commentId
   comment.account = accountId.toHexString()
@@ -187,17 +205,27 @@ export function handleCreateMoment(event: CreateMomentEvent): void {
 
   entity.save()
 
-  createMomentFunc(event.params.accountId, event.params.momentId, event.params.metadataURI, event.block.timestamp)
+  createMomentFunc(
+    event.params.accountId,
+    event.params.momentId,
+    event.params.metadataURI,
+    event.block.timestamp
+  )
 }
 
-function createMomentFunc(accountId: BigInt, momentId: BigInt, metadataURI: string, timestamp: BigInt): void {
-  let momen = new Moment(momentId.toHexString())
-  momen.momentId = momentId
-  momen.account = accountId.toHexString()
-  momen.likedAccounts = []
-  momen.timestamp = timestamp
-  momen.metadataURI = metadataURI
-  momen.save()
+function createMomentFunc(
+  accountId: BigInt,
+  momentId: BigInt,
+  metadataURI: string,
+  timestamp: BigInt
+): void {
+  let moment = new Moment(momentId.toHexString())
+  moment.momentId = momentId
+  moment.account = accountId.toHexString()
+  moment.likedAccounts = []
+  moment.timestamp = timestamp
+  moment.metadataURI = metadataURI
+  moment.save()
 }
 
 export function handleCreateSubSpaceDomain(
@@ -216,10 +244,22 @@ export function handleCreateSubSpaceDomain(
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  createSubSpaceDomainFunc(event.params.accountId ,event.params.primarySpaceId, event.params.subSpaceId, event.params.subDomainName, event.params.expireSeconds)
+  createSubSpaceDomainFunc(
+    event.params.accountId,
+    event.params.primarySpaceId,
+    event.params.subSpaceId,
+    event.params.subDomainName,
+    event.params.expireSeconds
+  )
 }
 
-function createSubSpaceDomainFunc(accountId: BigInt, primarySpaceId: BigInt, subSpaceId: BigInt, subDomainName: string, expireSeconds: BigInt): void {
+function createSubSpaceDomainFunc(
+  accountId: BigInt,
+  primarySpaceId: BigInt,
+  subSpaceId: BigInt,
+  subDomainName: string,
+  expireSeconds: BigInt
+): void {
   let space = new SpaceDomain(subSpaceId.toHexString())
   space.account = accountId.toHexString()
   space.spaceId = subSpaceId
@@ -259,7 +299,7 @@ export function handleLikeMoment(event: LikeMomentEvent): void {
 
 function likeMomentFunc(accountId: BigInt, momentId: BigInt): void {
   let moment = Moment.load(momentId.toHexString())
-  if (moment && Array.isArray(moment.likedAccounts)) {
+  if (moment) {
     moment.likedAccounts.push(accountId.toHexString())
     moment.save()
   }

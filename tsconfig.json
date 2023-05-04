@@ -1,4 +1,9 @@
 {
   "extends": "@graphprotocol/graph-ts/types/tsconfig.base.json",
-  "include": ["src", "tests"]
+  "include": ["src", "generated", "tests"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["ES2016"],
+    "rootDirs": ["./src", "./generated", "./tests"]
+  }
 }

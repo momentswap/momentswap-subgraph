@@ -107,7 +107,7 @@
 				"type": "uint64"
 			},
 			{
-				"indexed": true,
+				"indexed": false,
 				"internalType": "string",
 				"name": "primaryDomainName",
 				"type": "string"

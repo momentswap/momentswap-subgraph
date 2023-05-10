@@ -79,8 +79,8 @@ type Initialized @entity(immutable: true) {
 
 type LikeMoment @entity(immutable: true) {
   id: Bytes!
-  accountId: BigInt! # uint64
-  momentId: BigInt! # uint120
+  account: Account!
+  moment: Moment!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -235,42 +235,43 @@ type WithdrawRent @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-
 type Account @entity {
   id: ID!
-  address:  Bytes!
-  accountId:  BigInt!
-  avatarURI:  String!
+  address: Bytes!
+  avatarURI: String!
   moments: [Moment!]! @derivedFrom(field: "account")
   comments: [Comment!]! @derivedFrom(field: "account")
-  likedMoments: [Moment!]! @derivedFrom(field: "likedAccounts")
-  SpaceDomains:  [SpaceDomain!]! @derivedFrom(field: "account")
-  rentedSpaces: [SpaceDomain!]! @derivedFrom(field: "rentAccount")
+  likedMoments: [MomentLikeRecord!]! @derivedFrom(field: "account")
+  createdSpaces: [SpaceDomain!]! @derivedFrom(field: "creator")
+  rentedSpaces: [SpaceDomain!]! @derivedFrom(field: "user")
 }
 
 type SpaceDomain @entity {
   id: ID!
-  spaceId: BigInt!
   domainName: String!
-  primarySpaceId: BigInt!
+  primarySpaceDomain: SpaceDomain
   expireSeconds: BigInt!
-  account: Account!
-  rentAccount: Account
+  creator: Account!
+  user: Account
 }
 
 type Moment @entity {
   id: ID!
-  momentId: BigInt!
   account: Account!
-  likedAccounts: [Account!]!
+  likedAccounts: [MomentLikeRecord!]! @derivedFrom(field: "moment")
   timestamp: BigInt!
   metadataURI: String!
   comments: [Comment!]! @derivedFrom(field: "moment")
 }
 
+type MomentLikeRecord @entity {
+    id: ID!
+    account: Account
+    moment: Moment
+}
+
 type Comment @entity {
   id: ID!
-  commentId: BigInt!
   account: Account!
   moment: Moment!
   timestamp: BigInt!
@@ -279,8 +280,15 @@ type Comment @entity {
 
 type Item @entity {
   id: ID!
-  spaceId: BigInt!
+  spaceDoamin: SpaceDomain!
   seller: Bytes!
   accountContract: Bytes!
   price: BigInt!
+  status: ItemStatus!
+}
+
+enum ItemStatus {
+    LISTED
+    RENTED
+    CANCELED
 }

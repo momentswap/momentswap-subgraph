@@ -34,6 +34,7 @@ import {
   Initialized,
   LikeMoment,
   Moment,
+  MomentLikeRecord,
   OwnershipTransferred,
   RemoveComment,
   RemoveMoment,
@@ -79,9 +80,8 @@ export function handleCancelAccount(event: CancelAccountEvent): void {
 }
 
 function cancelAccountFunc(accountId: BigInt): void {
-  let account = Account.load(accountId.toHexString())
+  let account = Account.load(accountId.toString())
   if (account) {
-    account.accountId = new BigInt(0)
     account.address = new Bytes(0)
     account.avatarURI = ""
     account.save()
@@ -104,11 +104,11 @@ export function handleCancelLikeMoment(event: CancelLikeMomentEvent): void {
 }
 
 function cancelLikeMomentFunc(accountId: BigInt, momentId: BigInt): void {
-  let moment = Moment.load(momentId.toHexString())
-  if (moment) {
-    const likedAccounts = moment.likedAccounts || []
-    likedAccounts.splice(likedAccounts.indexOf(accountId.toHexString()), 1)
-    moment.save()
+  let entity = MomentLikeRecord.load(accountId.toString().concat("-").concat(momentId.toString()))
+  if (entity) {
+    entity.account = null
+    entity.moment = null
+    entity.save()
   }
 }
 
@@ -118,37 +118,35 @@ export function handleCreateAccount(event: CreateAccountEvent): void {
   )
   entity.accountId = event.params.accountId
   entity.primarySpaceId = event.params.primarySpaceId
-  entity.primaryDomainName = event.params.primaryDomainName.toHexString()
+  entity.primaryDomainName = event.params.primaryDomainName,
   entity.avatarURI = event.params.avatarURI
   entity.wallet = event.params.wallet
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
-
   entity.save()
+
   createAccountFunc(
     event.params.accountId,
     event.params.primarySpaceId,
-    event.params.primaryDomainName.toHexString(),
+    event.params.primaryDomainName,
     event.params.avatarURI,
     event.params.wallet
   )
 }
 
 function createAccountFunc(accountId: BigInt, primarySpaceId: BigInt, primaryDomainName: string, avatarURI: string, wallet: Address): void {
-  let account = new Account(accountId.toHexString())
+  let account = new Account(accountId.toString())
   account.address = wallet
-  account.accountId = accountId
   account.avatarURI = avatarURI
   account.save()
-  
-  let space = new SpaceDomain(primarySpaceId.toHexString())
-  space.spaceId = primarySpaceId
+
+  let space = new SpaceDomain(primarySpaceId.toString())
   space.domainName = primaryDomainName
-  space.primarySpaceId = new BigInt(0)
+  space.primarySpaceDomain = null
   space.expireSeconds = new BigInt(0)
-  space.account = accountId.toHexString()
+  space.creator = accountId.toString()
   space.save()
 }
 
@@ -156,9 +154,9 @@ export function handleCreateComment(event: CreateCommentEvent): void {
   let entity = new CreateComment(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
+  entity.commentId = event.params.commentId
   entity.accountId = event.params.accountId
   entity.momentId = event.params.momentId
-  entity.commentId = event.params.commentId
   entity.commentText = event.params.commentText
 
   entity.blockNumber = event.block.number
@@ -182,10 +180,9 @@ function createCommentFunc(
   commentText: string,
   timestamp: BigInt
 ): void {
-  let comment = new Comment(commentId.toHexString())
-  comment.commentId = commentId
-  comment.account = accountId.toHexString()
-  comment.moment = momentId.toHexString()
+  let comment = new Comment(commentId.toString())
+  comment.account = accountId.toString()
+  comment.moment = momentId.toString()
   comment.timestamp = timestamp
   comment.text = commentText
   comment.save()
@@ -219,10 +216,8 @@ function createMomentFunc(
   metadataURI: string,
   timestamp: BigInt
 ): void {
-  let moment = new Moment(momentId.toHexString())
-  moment.momentId = momentId
-  moment.account = accountId.toHexString()
-  moment.likedAccounts = []
+  let moment = new Moment(momentId.toString())
+  moment.account = accountId.toString()
   moment.timestamp = timestamp
   moment.metadataURI = metadataURI
   moment.save()
@@ -260,11 +255,10 @@ function createSubSpaceDomainFunc(
   subDomainName: string,
   expireSeconds: BigInt
 ): void {
-  let space = new SpaceDomain(subSpaceId.toHexString())
-  space.account = accountId.toHexString()
-  space.spaceId = subSpaceId
+  let space = new SpaceDomain(subSpaceId.toString())
+  space.creator = accountId.toString()
   space.domainName = subDomainName
-  space.primarySpaceId = primarySpaceId
+  space.primarySpaceDomain = primarySpaceId.toString()
   space.expireSeconds = expireSeconds
   space.save()
 }
@@ -286,23 +280,29 @@ export function handleLikeMoment(event: LikeMomentEvent): void {
   let entity = new LikeMoment(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  entity.accountId = event.params.accountId
-  entity.momentId = event.params.momentId
+
+  entity.account = event.params.accountId.toString()
+  entity.moment = event.params.momentId.toString()
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  likeMomentFunc(event.params.accountId, event.params.momentId)
+  momentLikeRecordFunc( event.params.accountId,  event.params.momentId)
 }
 
-function likeMomentFunc(accountId: BigInt, momentId: BigInt): void {
-  let moment = Moment.load(momentId.toHexString())
-  if (moment) {
-    moment.likedAccounts.push(accountId.toHexString())
-    moment.save()
+function momentLikeRecordFunc(accountId: BigInt, momentId: BigInt): void {
+  let entity = MomentLikeRecord.load(accountId.toString().concat("-").concat(momentId.toString()))
+  if (entity == null) {
+    entity = new MomentLikeRecord(
+      accountId.toString().concat("-").concat(momentId.toString())
+    )
   }
+
+  entity.account =  accountId.toString()
+  entity.moment = momentId.toString()
+  entity.save()
 }
 
 export function handleOwnershipTransferred(
@@ -333,13 +333,12 @@ export function handleRemoveComment(event: RemoveCommentEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  removeCommentFunc(event.params.accountId, event.params.commentId)
+  removeCommentFunc(event.params.commentId)
 }
 
-function removeCommentFunc(accountId: BigInt, commentId: BigInt): void {
-  let comment = Comment.load(commentId.toHexString())
+function removeCommentFunc(commentId: BigInt): void {
+  let comment = Comment.load(commentId.toString())
   if (comment) {
-    comment.commentId = new BigInt(0)
     comment.moment = ""
     comment.account = ""
     comment.timestamp = new BigInt(0)
@@ -360,15 +359,13 @@ export function handleRemoveMoment(event: RemoveMomentEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  removeMomentFunc(event.params.accountId, event.params.momentId)
+  removeMomentFunc(event.params.momentId)
 }
 
-function removeMomentFunc(accountId: BigInt, momentId: BigInt): void {
-  let moment = Moment.load(momentId.toHexString())
+function removeMomentFunc(momentId: BigInt): void {
+  let moment = Moment.load(momentId.toString())
   if (moment) {
-    moment.momentId = new BigInt(0)
     moment.account = ""
-    moment.likedAccounts = []
     moment.metadataURI = ""
     moment.timestamp = new BigInt(0)
     moment.save()
@@ -391,9 +388,9 @@ export function handleRentSpace(event: RentSpaceEvent): void {
 }
 
 function rentSpaceFunc(userId: BigInt, spaceId: BigInt): void {
-  let space = SpaceDomain.load(spaceId.toHexString())
+  let space = SpaceDomain.load(spaceId.toString())
   if (space) {
-    space.rentAccount = userId.toHexString()
+    space.user = userId.toString()
     space.save()
   }
 }
@@ -410,13 +407,13 @@ export function handleReturnSpace(event: ReturnSpaceEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  returnSpaceFunc(event.params.userId, event.params.spaceId)
+  returnSpaceFunc(event.params.spaceId)
 }
 
-function returnSpaceFunc(userId: BigInt, spaceId: BigInt): void {
-  let space = SpaceDomain.load(spaceId.toHexString())
+function returnSpaceFunc(spaceId: BigInt): void {
+  let space = SpaceDomain.load(spaceId.toString())
   if (space) {
-    space.rentAccount = ""
+    space.user = null
     space.save()
   }
 }
@@ -474,12 +471,12 @@ export function handleUpdateAvatarURI(event: UpdateAvatarURIEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  
+
   updateAvatarURIFunc(event.params.accountId, event.params.avatarURI)
 }
 
 function updateAvatarURIFunc(accountId: BigInt, avatarURI: string): void {
-  let account = Account.load(accountId.toHexString())
+  let account = Account.load(accountId.toString())
   if (account) {
     account.avatarURI = avatarURI
     account.save()
@@ -504,7 +501,7 @@ export function handleUpdateExpireSeconds(
 }
 
 function updateExpireSecondsFunc(spaceId: BigInt, expireSeconds: BigInt): void {
-  let space = SpaceDomain.load(spaceId.toHexString())
+  let space = SpaceDomain.load(spaceId.toString())
   if (space) {
     space.expireSeconds = expireSeconds
     space.save()
@@ -529,7 +526,7 @@ export function handleUpdateRentedSpaceDomainName(
 }
 
 function updateRentedSpaceDomainNameFunc(spaceId: BigInt, domainName: string): void {
-  let space = SpaceDomain.load(spaceId.toHexString())
+  let space = SpaceDomain.load(spaceId.toString())
   if (space) {
     space.domainName = domainName
     space.save()
